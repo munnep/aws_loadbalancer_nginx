@@ -12,3 +12,4 @@ AWS loadbalancer Nginx
 - [] create ec2 instance without public ip, only private subnet
 - [] create a LB (check Application Load Balancer or Network Load Balancer)
 - [] publish a service over LB, ie nginx
+
