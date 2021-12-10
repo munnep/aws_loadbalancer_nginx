@@ -73,9 +73,9 @@ resource "aws_route_table" "privateroutetable" {
     cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.NAT.id
   }
-  
+
   tags = {
-   Name = "patrick-route-table-nat"
+    Name = "patrick-route-table-nat"
   }
 
 }
@@ -164,7 +164,7 @@ data "cloudinit_config" "server_config" {
 resource "aws_instance" "web_server" {
   ami           = "ami-0a49b025fffbbdac6"
   instance_type = "t2.micro"
- # key_name      = "patrick-key-pair"
+  # key_name      = "patrick-key-pair"
 
   network_interface {
     network_interface_id = aws_network_interface.web-priv.id
@@ -196,4 +196,30 @@ resource "aws_lb_target_group_attachment" "lb_target_group_attachment" {
   target_group_arn = aws_lb_target_group.lb_target_group.arn
   target_id        = aws_instance.web_server.id
   port             = 80
+}
+
+# application load balancer
+resource "aws_lb" "lb_application" {
+  name               = "patrick-lb"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.web_server_sg.id]
+  subnets            = [aws_subnet.public1.id, aws_subnet.public2.id]
+
+
+
+  tags = {
+    Environment = "patrick-lb"
+  }
+}
+
+resource "aws_lb_listener" "front_end" {
+  load_balancer_arn = aws_lb.lb_application.arn
+  port              = "80"
+  protocol          = "HTTP"
+  
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.lb_target_group.arn
+  }
 }
