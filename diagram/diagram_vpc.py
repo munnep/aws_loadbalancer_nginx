@@ -26,7 +26,7 @@ with Diagram(
         with Cluster("Availability Zone: us-east-1a"):
             # Subcluster 
             with Cluster("subnet_public1"):
-                loadbalancer1 = ElbApplicationLoadBalancer("Application \n Loadbalancer")
+                loadbalancer1 = ElbApplicationLoadBalancer("Application \n Load Balancer")
                 nat_gateway = NATGateway("nat_gateway")
             # Subcluster
             with Cluster("subnet_private1"):
@@ -34,7 +34,7 @@ with Diagram(
         with Cluster("Availability Zone: us-east-1b"):
             # Subcluster
             with Cluster("subnet_public2"):
-                loadbalancer2 = ElbApplicationLoadBalancer("Application \n Loadbalancer")
+                loadbalancer2 = ElbApplicationLoadBalancer("Application \n Load Balancer")
  
     # Diagram
     user >> [loadbalancer1, 

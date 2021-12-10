@@ -16,7 +16,7 @@ with Diagram(
 ) as diag:
     # Non Clustered
     user = Server("user")
-    loadbalancer = ElbApplicationLoadBalancer("Application \n Loadbalancer")
+    loadbalancer = ElbApplicationLoadBalancer("Application \n Load Balancer")
     ec2_server_web_server = EC2("web_server")
  
     # Diagram
