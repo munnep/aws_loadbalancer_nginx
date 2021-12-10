@@ -75,7 +75,7 @@ resource "aws_route_table" "privateroutetable" {
   }
   
   tags = {
-   Name = "patrick-route-table-gw"
+   Name = "patrick-route-table-nat"
   }
 
 }
@@ -141,46 +141,46 @@ resource "aws_security_group" "web_server_sg" {
 
 
 
-# resource "aws_network_interface" "web-priv" {
-#   subnet_id   = aws_subnet.private.id
-#   private_ips = ["10.233.11.1"]
+resource "aws_network_interface" "web-priv" {
+  subnet_id   = aws_subnet.private.id
+  private_ips = ["10.233.11.11"]
 
-#   tags = {
-#     Name = "primary_network_interface"
-#   }
-# }
+  tags = {
+    Name = "primary_network_interface"
+  }
+}
 
-# data "cloudinit_config" "server_config" {
-#   gzip          = true
-#   base64_encode = true
-#   part {
-#     content_type = "text/cloud-config"
-#     content      = file("${path.module}/webserver.yml")
-#   }
-# }
-
-
-
-# # resource "aws_instance" "web_server" {
-# #   ami           = "ami-083654bd07b5da81d"
-# #   instance_type = "t2.micro"
-# #  # key_name      = "patrick-key-pair"
-
-# #   network_interface {
-# #     network_interface_id = aws_network_interface.web-priv.id
-# #     device_index         = 0
-# #   }
-
-# #   user_data = data.cloudinit_config.server_config.rendered
-# #   tags = {
-# #     Name = "patrick-webserver"
-# #   }
-# # }
+data "cloudinit_config" "server_config" {
+  gzip          = true
+  base64_encode = true
+  part {
+    content_type = "text/cloud-config"
+    content      = file("${path.module}/webserver.yml")
+  }
+}
 
 
 
-# resource "aws_network_interface_sg_attachment" "sg_attachment" {
-#   security_group_id    = aws_security_group.web_server_sg.id
-#   network_interface_id = aws_network_interface.web-priv.id
-# }
+resource "aws_instance" "web_server" {
+  ami           = "ami-0a49b025fffbbdac6"
+  instance_type = "t2.micro"
+ # key_name      = "patrick-key-pair"
+
+  network_interface {
+    network_interface_id = aws_network_interface.web-priv.id
+    device_index         = 0
+  }
+
+  user_data = data.cloudinit_config.server_config.rendered
+  tags = {
+    Name = "patrick-webserver"
+  }
+}
+
+
+
+resource "aws_network_interface_sg_attachment" "sg_attachment" {
+  security_group_id    = aws_security_group.web_server_sg.id
+  network_interface_id = aws_network_interface.web-priv.id
+}
 
