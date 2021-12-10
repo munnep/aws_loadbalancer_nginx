@@ -8,6 +8,7 @@ AWS loadbalancer Nginx
 - [x] create internet gw and connect to public network with a route table
 - [x] create nat gateway, and connect to private network with a route table
 - [x] route table association with the subnets 
+- [x] security group for allowing port 80
 
 # to do
 - [] create ec2 instance without public ip, only private subnet

@@ -96,47 +96,47 @@ resource "aws_route_table_association" "PrivateRT1" {
   route_table_id = aws_route_table.privateroutetable.id
 }
 
-# resource "aws_security_group" "web_server_sg" {
-#   vpc_id      = aws_vpc.main.id
-#   name        = "web_server_sg"
-#   description = "web_server_sg"
+resource "aws_security_group" "web_server_sg" {
+  vpc_id      = aws_vpc.main.id
+  name        = "web_server_sg"
+  description = "web_server_sg"
 
-#   ingress {
-#     description = "https from internet"
-#     from_port   = 443
-#     to_port     = 443
-#     protocol    = "tcp"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
+  ingress {
+    description = "https from internet"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-#   ingress {
-#     description = "http from internet"
-#     from_port   = 80
-#     to_port     = 80
-#     protocol    = "tcp"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
+  ingress {
+    description = "http from internet"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-#   ingress {
-#     description = "icmp from internet"
-#     from_port   = 0
-#     to_port     = 0
-#     protocol    = "icmp"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
+  ingress {
+    description = "icmp from internet"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-#   egress {
-#     from_port        = 0
-#     to_port          = 0
-#     protocol         = "-1"
-#     cidr_blocks      = ["0.0.0.0/0"]
-#     ipv6_cidr_blocks = ["::/0"]
-#   }
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
 
-#   tags = {
-#     Name = "patrick-web_server_sg"
-#   }
-# }
+  tags = {
+    Name = "patrick-web_server_sg"
+  }
+}
 
 
 
