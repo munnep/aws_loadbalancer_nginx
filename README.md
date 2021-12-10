@@ -8,8 +8,12 @@ Steps involved are:
 - Creating a Security group that allows traffic over port 80 to the loadbalancer and webserver
 - Create an application load balancer to forward http traffic to the web server in the private subnet
 
-Diagram of the environment:  
-![](diagram/vpc-diagram.png)  
+Diagram of the environment:    
+Simple:  
+![](diagram/simple-diagram.png)    
+
+Detailed:  
+![](diagram/vpc-diagram.png)    
 
 There is a short [README.md](manual_steps/README.md) on how to do all this manually without Terraform. This is just to give you a better idea on the steps involved. Please use this only if you do not want to use Terraform. 
 
