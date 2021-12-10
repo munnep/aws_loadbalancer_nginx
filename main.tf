@@ -2,16 +2,16 @@ resource "aws_vpc" "main" {
   cidr_block = "10.233.0.0/16"
 
   tags = {
-    Name = "patrick-vpc"
+    Name = "${var.tag_prefix}-vpc"
   }
 }
 
 resource "aws_subnet" "public1" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.233.1.0/24"
-  availability_zone = "eu-central-1a"
+  availability_zone = "${var.region}a"
   tags = {
-    Name = "patrick-public"
+    Name = "${var.tag_prefix}-public"
   }
 }
 
@@ -21,7 +21,7 @@ resource "aws_subnet" "public2" {
   availability_zone = "eu-central-1b"
 
   tags = {
-    Name = "patrick-public2"
+    Name = "${var.tag_prefix}-public2"
   }
 }
 
@@ -30,7 +30,7 @@ resource "aws_subnet" "private" {
   cidr_block        = "10.233.11.0/24"
   availability_zone = "eu-central-1a"
   tags = {
-    Name = "patrick-private"
+    Name = "${var.tag_prefix}-private"
   }
 }
 
@@ -38,7 +38,7 @@ resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "patrick-gw"
+    Name = "${var.tag_prefix}-gw"
   }
 }
 
@@ -52,7 +52,7 @@ resource "aws_route_table" "publicroutetable" {
   }
 
   tags = {
-    Name = "patrick-route-table-gw"
+    Name = "${var.tag_prefix}-route-table-gw"
   }
 }
 
@@ -65,6 +65,11 @@ resource "aws_eip" "nateIP" {
 resource "aws_nat_gateway" "NAT" {
   allocation_id = aws_eip.nateIP.id
   subnet_id     = aws_subnet.public1.id
+
+  tags = {
+    Name = "${var.tag_prefix}-nat"
+  }
+
 }
 
 resource "aws_route_table" "privateroutetable" {
@@ -75,7 +80,7 @@ resource "aws_route_table" "privateroutetable" {
   }
 
   tags = {
-    Name = "patrick-route-table-nat"
+    Name = "${var.tag_prefix}-route-table-nat"
   }
 
 }
@@ -126,7 +131,7 @@ resource "aws_security_group" "web_server_sg" {
   }
 
   tags = {
-    Name = "patrick-web_server_sg"
+    Name = "${var.tag_prefix}-web_server_sg"
   }
 }
 
@@ -147,16 +152,16 @@ data "cloudinit_config" "server_config" {
   base64_encode = true
   part {
     content_type = "text/cloud-config"
-    content      = file("${path.module}/webserver.yml")
+    content      = file("${path.module}/scripts/webserver.yml")
   }
 }
 
 
 
 resource "aws_instance" "web_server" {
-  ami           = "ami-0a49b025fffbbdac6"
+  ami           = var.ami
   instance_type = "t2.micro"
-  # key_name      = "patrick-key-pair"
+  # key_name      = "${var.tag_prefix}-key-pair"
 
   network_interface {
     network_interface_id = aws_network_interface.web-priv.id
@@ -165,7 +170,7 @@ resource "aws_instance" "web_server" {
 
   user_data = data.cloudinit_config.server_config.rendered
   tags = {
-    Name = "patrick-webserver"
+    Name = "${var.tag_prefix}-webserver"
   }
 }
 
@@ -178,7 +183,7 @@ resource "aws_network_interface_sg_attachment" "sg_attachment" {
 
 # loadbalancer Target Group
 resource "aws_lb_target_group" "lb_target_group" {
-  name     = "patrick-target-group"
+  name     = "${var.tag_prefix}-target-group"
   port     = 80
   protocol = "HTTP"
   vpc_id   = aws_vpc.main.id
@@ -192,16 +197,14 @@ resource "aws_lb_target_group_attachment" "lb_target_group_attachment" {
 
 # application load balancer
 resource "aws_lb" "lb_application" {
-  name               = "patrick-lb"
+  name               = "${var.tag_prefix}-lb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.web_server_sg.id]
   subnets            = [aws_subnet.public1.id, aws_subnet.public2.id]
 
-
-
   tags = {
-    Environment = "patrick-lb"
+    Environment = "${var.tag_prefix}-lb"
   }
 }
 
@@ -209,7 +212,7 @@ resource "aws_lb_listener" "front_end" {
   load_balancer_arn = aws_lb.lb_application.arn
   port              = "80"
   protocol          = "HTTP"
-  
+
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.lb_target_group.arn
