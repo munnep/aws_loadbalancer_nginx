@@ -6,33 +6,33 @@ resource "aws_vpc" "main" {
   }
 }
 
-# resource "aws_subnet" "public1" {
-#   vpc_id            = aws_vpc.main.id
-#   cidr_block        = "10.233.1.0/24"
-#   availability_zone = "eu-central-1a"
-#   tags = {
-#     Name = "patrick-public"
-#   }
-# }
+resource "aws_subnet" "public1" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.233.1.0/24"
+  availability_zone = "eu-central-1a"
+  tags = {
+    Name = "patrick-public"
+  }
+}
 
-# resource "aws_subnet" "public2" {
-#   vpc_id            = aws_vpc.main.id
-#   cidr_block        = "10.233.2.0/24"
-#   availability_zone = "eu-central-1b"
+resource "aws_subnet" "public2" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.233.2.0/24"
+  availability_zone = "eu-central-1b"
 
-#   tags = {
-#     Name = "patrick-public2"
-#   }
-# }
+  tags = {
+    Name = "patrick-public2"
+  }
+}
 
-# resource "aws_subnet" "private" {
-#   vpc_id            = aws_vpc.main.id
-#   cidr_block        = "10.233.11.0/24"
-#   availability_zone = "eu-central-1a"
-#   tags = {
-#     Name = "patrick-private"
-#   }
-# }
+resource "aws_subnet" "private" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.233.11.0/24"
+  availability_zone = "eu-central-1a"
+  tags = {
+    Name = "patrick-private"
+  }
+}
 
 # resource "aws_internet_gateway" "gw" {
 #   vpc_id = aws_vpc.main.id

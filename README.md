@@ -3,9 +3,9 @@ AWS loadbalancer Nginx
 
 
 # done
+- [x] create VPC
 
 # to do
-- [] create VPC
 - [] create 2 subnets, one for public network, one for private network
 - [] create internet gw and connect to public network
 - [] create nat gateway, and connect to private network
