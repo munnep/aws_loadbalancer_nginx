@@ -34,27 +34,27 @@ resource "aws_subnet" "private" {
   }
 }
 
-# resource "aws_internet_gateway" "gw" {
-#   vpc_id = aws_vpc.main.id
+resource "aws_internet_gateway" "gw" {
+  vpc_id = aws_vpc.main.id
 
-#   tags = {
-#     Name = "patrick-gw"
-#   }
-# }
+  tags = {
+    Name = "patrick-gw"
+  }
+}
 
 
-# resource "aws_route_table" "publicroutetable" {
-#   vpc_id = aws_vpc.main.id
+resource "aws_route_table" "publicroutetable" {
+  vpc_id = aws_vpc.main.id
 
-#   route {
-#     cidr_block = "0.0.0.0/0"
-#     gateway_id = aws_internet_gateway.gw.id
-#   }
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.gw.id
+  }
 
-#   tags = {
-#     Name = "patrick-route-table"
-#   }
-# }
+  tags = {
+    Name = "patrick-route-table"
+  }
+}
 
 # resource "aws_route_table" "privateroutetable" {
 #   vpc_id = aws_vpc.main.id
