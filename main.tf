@@ -102,14 +102,6 @@ resource "aws_security_group" "web_server_sg" {
   description = "web_server_sg"
 
   ingress {
-    description = "https from internet"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
     description = "http from internet"
     from_port   = 80
     to_port     = 80

@@ -10,8 +10,8 @@ AWS loadbalancer Nginx
 - [x] route table association with the subnets 
 - [x] security group for allowing port 80
 - [x] create ec2 instance without public ip, only private subnet
+- [x] create a LB (check Application Load Balancer or Network Load Balancer)
+- [x] publish a service over LB, ie nginx
 
 # to do
-- [] create a LB (check Application Load Balancer or Network Load Balancer)
-- [] publish a service over LB, ie nginx
 
