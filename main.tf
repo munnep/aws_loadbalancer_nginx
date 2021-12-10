@@ -1,5 +1,5 @@
 resource "aws_vpc" "main" {
-  cidr_block = "10.233.0.0/16"
+  cidr_block = var.vpc_cidr
 
   tags = {
     Name = "${var.tag_prefix}-vpc"
@@ -8,7 +8,7 @@ resource "aws_vpc" "main" {
 
 resource "aws_subnet" "public1" {
   vpc_id            = aws_vpc.main.id
-  cidr_block        = "10.233.1.0/24"
+  cidr_block        = cidrsubnet(var.vpc_cidr, 8, 1)
   availability_zone = "${var.region}a"
   tags = {
     Name = "${var.tag_prefix}-public"
@@ -17,7 +17,7 @@ resource "aws_subnet" "public1" {
 
 resource "aws_subnet" "public2" {
   vpc_id            = aws_vpc.main.id
-  cidr_block        = "10.233.2.0/24"
+  cidr_block        = cidrsubnet(var.vpc_cidr, 8, 2)
   availability_zone = "eu-central-1b"
 
   tags = {
@@ -27,7 +27,7 @@ resource "aws_subnet" "public2" {
 
 resource "aws_subnet" "private" {
   vpc_id            = aws_vpc.main.id
-  cidr_block        = "10.233.11.0/24"
+  cidr_block        = cidrsubnet(var.vpc_cidr, 8, 11)
   availability_zone = "eu-central-1a"
   tags = {
     Name = "${var.tag_prefix}-private"
@@ -140,7 +140,7 @@ resource "aws_security_group" "web_server_sg" {
 
 resource "aws_network_interface" "web-priv" {
   subnet_id   = aws_subnet.private.id
-  private_ips = ["10.233.11.11"]
+  private_ips = [cidrhost(cidrsubnet(var.vpc_cidr, 8, 11),22)]
 
   tags = {
     Name = "primary_network_interface"
