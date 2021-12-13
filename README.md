@@ -13,7 +13,10 @@ Simple:
 ![](diagram/simple-diagram.png)    
 
 Detailed:  
-![](diagram/vpc-diagram.png)   
+![](diagram/vpc-diagram.png)     
+
+Wardley Map drawing:  
+![](diagram/aws_wardley_map.png)   
 
 There is a short [README.md](manual_steps/README.md) on how to do all this manually without Terraform. This is just to give you a better idea on the steps involved. Please use this only if you do not want to use Terraform. 
 
@@ -56,7 +59,7 @@ terraform plan
 ```
 terraform apply
 ```
-- Terraform output should create 3 resources and show you the public ip address
+- Terraform output should create 20 resources and show you the public dns string you can use to connect to the webserver
 ```
 Apply complete! Resources: 20 added, 0 changed, 0 destroyed.
 
