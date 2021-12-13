@@ -7,7 +7,7 @@ from diagrams.onprem.compute import Server
 title = "VPC with 2 public subnets and private subnet for the webserver. \n Single application loadbalancer which is high available and therefore in both public subnets"
 outformat = "png"
 filename = "vpc-diagram"
-direction = "LR"
+direction = "TB"
 
 
 with Diagram(
@@ -23,6 +23,11 @@ with Diagram(
     with Cluster("vpc"):
         igw_gateway = InternetGateway("igw")
 
+        with Cluster("Availability Zone: us-east-1b"):
+            # Subcluster
+            with Cluster("subnet_public2"):
+                loadbalancer2 = ElbApplicationLoadBalancer("Application \n Load Balancer")
+
         with Cluster("Availability Zone: us-east-1a"):
             # Subcluster 
             with Cluster("subnet_public1"):
@@ -31,13 +36,11 @@ with Diagram(
             # Subcluster
             with Cluster("subnet_private1"):
                 ec2_server_web_server = EC2("web_server")
-        with Cluster("Availability Zone: us-east-1b"):
-            # Subcluster
-            with Cluster("subnet_public2"):
-                loadbalancer2 = ElbApplicationLoadBalancer("Application \n Load Balancer")
  
     # Diagram
     user >> [loadbalancer1, 
              loadbalancer2] >> ec2_server_web_server 
+
+    ec2_server_web_server >> nat_gateway >> igw_gateway >> Server("APT Ubuntu")
 
 diag
