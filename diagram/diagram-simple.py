@@ -6,7 +6,7 @@ from diagrams.onprem.compute import Server
 # Variables
 outformat = "png"
 filename = "simple-diagram"
-direction = "LR"
+direction = "TB"
 
 
 with Diagram(
