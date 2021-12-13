@@ -1,0 +1,21 @@
+title AWS Load Balancer Nginx
+anchor Customer [0.95, 0.78]
+component Load Balancer [0.78, 0.79] label [19, -4]
+component Infrastructure [0.64, 0.80]
+component Virtual Machine [0.35, 0.83] label [-26, 12]
+component compute [0.22, 0.85]
+component storage [0.17, 0.83] label [-27, 34]
+component Datacenter [0.10, 0.72] label [-57, -15]
+component Power [0.06, 0.88] label [-27, 20]
+Datacenter->storage
+Datacenter->compute
+Datacenter->Infrastructure
+compute->Virtual Machine
+Virtual Machine->Infrastructure
+storage->Virtual Machine
+Infrastructure->Load Balancer
+Load Balancer->Customer
+Power->Datacenter
+
+
+style wardley
